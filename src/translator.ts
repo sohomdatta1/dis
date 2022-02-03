@@ -15,7 +15,7 @@ function run_cmd(cmd: string, args: string[]) : void {
     }
 }
 
-class Compiler {
+class Translator {
     _buf: string
     constructor() {
         this._buf = "";
@@ -98,8 +98,8 @@ _L4:
         this.write(';; -- sub --')
         this.write('pop rax')
         this.write('pop rdi')
-        this.write('sub rax, rdi')
-        this.write('push rax')
+        this.write('sub rdi, rax')
+        this.write('push rdi')
     }
     mul() {
         this.write(';; -- mul --')
@@ -116,8 +116,7 @@ _L4:
     abort(error_msg: string) {
         throw new Error(`Compilation Error: ${error_msg}`)
     }
-    compile(ins: number[][], output_file: string) {
-        print('[INFO] Converting to assembly')
+    translate(ins: number[][], output_file: string) {
         this.start();
         ins.forEach(async op => {
             switch ( op[0] ) {
@@ -150,4 +149,4 @@ _L4:
     }
 }
 
-export default Compiler;
+export default Translator;

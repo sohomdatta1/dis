@@ -1,5 +1,4 @@
 import { op_gen } from  './ops'
-import { print } from './print'
 import * as fs from 'fs'
 
 function is_wsp(x:string): Boolean {
@@ -18,14 +17,14 @@ class Parser {
         this.lines = 1
     }
 
-    error(error_msg: string) {
-        throw new Error(`Parsing Error: ${error_msg}`)
+    abort(error_msg: string) {
+        throw new Error(`Parsing Error: ${error_msg} on ${this.lines}:${this.chars}`)
     }
 
     get_until_wsp(): string {
         let temp_ptr = this.ptr;
         let temp_buf = ""
-        while ( !is_wsp(this._buf[temp_ptr]) && this.ptr < this._buf.length ) {
+        while ( !is_wsp(this._buf[temp_ptr]) && temp_ptr < this._buf.length ) {
             temp_buf += this._buf[temp_ptr]
             temp_ptr++
         }
@@ -74,7 +73,13 @@ class Parser {
                 }
                 break;
                 default: {
-                    ins.push(op_gen.push(parseInt(this.get_until_wsp())))
+                    const token = this.get_until_wsp();
+                    const number = parseInt(token);
+                    if ( !isNaN(number) ) {
+                        ins.push(op_gen.push(number))
+                    } else {
+                        this.abort("Unrecognized token")
+                    }
                 }
             }
         }

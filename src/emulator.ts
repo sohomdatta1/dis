@@ -32,7 +32,7 @@ class Emulator {
         if ( !a || !b ) {
             this._abort("Stack underflow");
         } else {
-            this._stack.push(a-b)
+            this._stack.push(b-a)
         }
     }
     _mul() : void {
