@@ -7,7 +7,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -p .",
     "start": "node dist/index.js",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "local": "npm i -g && dis build examples/a.dis"
+  },
+  "bin": {
+    "dis": "dist/index.js"
   },
   "keywords": [],
   "author": "",
